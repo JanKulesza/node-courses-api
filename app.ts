@@ -1,30 +1,18 @@
-import path from "path";
-import os from "os";
-import fs from "fs";
-import EventEmitter from "events";
+import { createServer } from "http";
 
-type EventArg = {
-  id: number;
-  url: string;
-};
+const server = createServer((req, res) => {
+  console.log(req.url);
 
-console.log(path.parse(import.meta.dirname));
-
-console.log(os.version());
-console.log("Total Memory: ", os.totalmem(), "\n", "Free Memory", os.freemem());
-
-fs.readdir("./", (err, result) => {
-  if (err) return null;
-  console.log(result);
+  if (req.url === "/") {
+    res.write("Hello World!");
+    res.end();
+  }
+  if (req.url === "/courses") {
+    res.write(JSON.stringify([1, 2, 3]));
+    res.end();
+  }
 });
 
-const emitter = new EventEmitter();
-
-emitter.on("message", (arg: EventArg) => {
-  console.log("Message!!! ", arg);
+server.listen(3000, () => {
+  console.log("Listening on port 8080...");
 });
-
-emitter.emit("message", {
-  id: 1,
-  url: "url",
-} satisfies EventArg);
