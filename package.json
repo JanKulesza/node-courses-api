@@ -1,0 +1,10 @@
+{
+  "name": "node-course",
+  "version": "1.0.0",
+  "main": "app.js",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "node --experimental-transform-types --watch app.ts"
+  }
+}
