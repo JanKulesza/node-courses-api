@@ -6,5 +6,9 @@
   "type": "module",
   "scripts": {
     "dev": "node --experimental-transform-types --watch app.ts"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^22.13.10"
   }
 }
