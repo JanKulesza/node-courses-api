@@ -3,11 +3,13 @@ import express from "express";
 import logger from "./middlewares/logger.ts";
 import { coursesRouter } from "./routes/courses.ts";
 import { genresRouter } from "./routes/genres.ts";
+import connectDB from "./utils/connectDB.ts";
 
 configDotenv();
 
 const app = express();
 
+// Middlewares
 app.use(express.json());
 
 if (app.get("env") === "development") {
@@ -28,5 +30,6 @@ app.use("/api/genres", genresRouter);
 
 const PORT = process.env.PORT ?? 8080;
 app.listen(PORT, () => {
+  connectDB(process.env.MONGODB_URI);
   console.log(`Started server at http://localhost:${PORT}`);
 });
