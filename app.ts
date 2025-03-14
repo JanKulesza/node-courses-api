@@ -72,6 +72,20 @@ app.put("/api/courses/:id", (req, res) => {
   res.json({ ...updatedCourse });
 });
 
+app.delete("/api/courses/:id", (req, res) => {
+  const { id } = req.params;
+
+  const course = courses.find((c) => c.id === +id);
+  if (!course) {
+    res.status(404).json("Course not found");
+    return;
+  }
+
+  courses = courses.filter((c) => c.id !== +id);
+
+  res.json({});
+});
+
 const PORT = process.env.PORT ?? 8080;
 app.listen(PORT, () => {
   console.log(`Started server at http://localhost:${PORT}`);
