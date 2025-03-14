@@ -6,6 +6,7 @@ import {
   type GenreInputType,
   type CourseInputType,
 } from "./utils/schema/index.ts";
+import logger from "./middlewares/logger.ts";
 
 configDotenv();
 
@@ -18,6 +19,8 @@ let courses = [
 ];
 
 app.use(express.json());
+
+app.use(logger);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
