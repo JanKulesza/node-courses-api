@@ -2,6 +2,8 @@ import { configDotenv } from "dotenv";
 import express from "express";
 import {
   courseInputSchema,
+  genreInputSchema,
+  type GenreInputType,
   type CourseInputType,
 } from "./utils/schema/index.ts";
 
@@ -21,6 +23,7 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
+// /api/courses
 app.get("/api/courses", (req, res) => {
   res.json(courses);
 });
@@ -30,7 +33,7 @@ app.post("/api/courses", (req, res) => {
 
   const validation = courseInputSchema.safeParse(body);
   if (!validation.success) {
-    res.status(400).send(validation.error.errors.map((e) => e.message));
+    res.status(400).json(validation.error.errors);
     return;
   }
 
@@ -40,6 +43,7 @@ app.post("/api/courses", (req, res) => {
   res.status(201).send(course);
 });
 
+// /api/courses/:id
 app.get("/api/courses/:id", (req, res) => {
   const { id } = req.params;
   const { sortBy } = req.query;
@@ -61,7 +65,7 @@ app.put("/api/courses/:id", (req, res) => {
 
   const validation = courseInputSchema.safeParse(req.body);
   if (!validation.success) {
-    res.status(400).send(validation.error.errors.map((e) => e.message));
+    res.status(400).json(validation.error.errors);
     return;
   }
   const { name } = req.body as CourseInputType;
@@ -82,6 +86,82 @@ app.delete("/api/courses/:id", (req, res) => {
   }
 
   courses = courses.filter((c) => c.id !== +id);
+
+  res.json({});
+});
+
+let genres = [
+  { id: 1, name: "genre 1" },
+  { id: 2, name: "genre 2" },
+];
+
+app.get("/api/genres", (req, res) => {
+  res.json(genres);
+});
+
+app.post("/api/genres", (req, res) => {
+  const validation = genreInputSchema.safeParse(req.body);
+  if (!validation.success) {
+    res.status(400).json(validation.error.errors);
+    return;
+  }
+
+  const { name } = req.body as GenreInputType;
+  const newGenre = { id: genres.length + 1, name };
+  genres.push(newGenre);
+
+  res.json(newGenre);
+});
+
+app.get("/api/genres/:id", (req, res) => {
+  const { id } = req.params;
+
+  const genre = genres.find((g) => g.id === +id);
+  if (!genre) {
+    res.status(404).json({ error: "Genre not found" });
+    return;
+  }
+
+  res.json(genre);
+});
+
+app.put("/api/genres/:id", (req, res) => {
+  const { id } = req.params;
+
+  const genre = genres.find((g) => g.id === +id);
+  if (!genre) {
+    res.status(404).json({ error: "Genre not found" });
+    return;
+  }
+
+  const validation = genreInputSchema.safeParse(req.body);
+  if (!validation.success) {
+    res.status(400).json(validation.error.errors);
+    return;
+  }
+
+  const { name } = req.body as GenreInputType;
+  const updatedGenre = { id: genre.id, name };
+
+  res.json(updatedGenre);
+});
+
+app.delete("/api/genres/:id", (req, res) => {
+  const { id } = req.params;
+
+  const genre = genres.find((g) => g.id === +id);
+  if (!genre) {
+    res.status(404).json({ error: "Genre not found" });
+    return;
+  }
+
+  const validation = genreInputSchema.safeParse(req.body);
+  if (!validation.success) {
+    res.status(400).json(validation.error.errors);
+    return;
+  }
+
+  genres = genres.filter((g) => g.id !== +id);
 
   res.json({});
 });
