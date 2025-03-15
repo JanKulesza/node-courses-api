@@ -4,6 +4,13 @@ export const courseInputSchema = z.object({
   name: z
     .string({ required_error: "Name is required." })
     .min(3, "Name is too short."),
+  author: z
+    .string({ required_error: "Name is required." })
+    .min(3, "Name is too short."),
+  tags: z
+    .array(z.string(), { required_error: "Tags are required" })
+    .min(1, "Provide at least one tag."),
+  isPublished: z.boolean({ required_error: "Published status is required." }),
 });
 
 export type CourseInputType = z.infer<typeof courseInputSchema>;
