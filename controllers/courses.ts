@@ -1,4 +1,4 @@
-import Course from "../models/Course.ts";
+import Course from "../models/course.ts";
 import { type Response, type Request } from "express";
 import {
   courseInputSchema,
@@ -15,6 +15,8 @@ export const getCourses = async (req: Request, res: Response) => {
 
     res.json(courses);
   } catch (error) {
+    res.status(500).json({ error: "An unexpected error occured." });
+    if (error instanceof MongooseError) return console.log(error.message);
     console.log(error);
   }
 };
@@ -28,6 +30,8 @@ export const getCourse = async (req: Request, res: Response) => {
 
     res.json(course);
   } catch (error) {
+    res.status(500).json({ error: "An unexpected error occured." });
+    if (error instanceof MongooseError) return console.log(error.message);
     console.log(error);
   }
 };
@@ -77,16 +81,21 @@ export const updateCourse = async (req: Request, res: Response) => {
       return;
     }
 
-    const { name, author, isPublished, tags } = req.body as CourseInputType;
+    const { name, author, isPublished, tags, category, price } =
+      req.body as CourseInputType;
     const updatedCourse = await Course.findByIdAndUpdate(id, {
       name,
       author,
+      category,
       tags,
       isPublished,
+      price,
     });
 
     res.json(updatedCourse);
   } catch (error) {
+    res.status(500).json({ error: "An unexpected error occured." });
+    if (error instanceof MongooseError) return console.log(error.message);
     console.log(error);
   }
 };
@@ -105,6 +114,8 @@ export const deleteCourse = async (req: Request, res: Response) => {
 
     res.json({});
   } catch (error) {
+    res.status(500).json({ error: "An unexpected error occured." });
+    if (error instanceof MongooseError) return console.log(error.message);
     console.log(error);
   }
 };
