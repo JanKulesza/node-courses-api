@@ -6,8 +6,12 @@ import {
 } from "../utils/schema/index.ts";
 
 export const getCourses = async (req: Request, res: Response) => {
+  const { tag, sortBy } = req.query;
   try {
-    const courses = await Course.find();
+    const courses = await Course.find()
+      .in("tags", tag ? [new RegExp(".*" + tag + ".*")] : [/^/])
+      .sort(sortBy ? { [String(sortBy)]: 1 } : {});
+
     res.json(courses);
   } catch (error) {
     console.log(error);
