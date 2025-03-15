@@ -4,7 +4,7 @@ import {
   courseInputSchema,
   type CourseInputType,
 } from "../utils/schema/course.ts";
-import { MongooseError } from "mongoose";
+import { handleError } from "../utils/handleError.ts";
 
 export const getCourses = async (req: Request, res: Response) => {
   const { tag, sortBy } = req.query;
@@ -15,9 +15,7 @@ export const getCourses = async (req: Request, res: Response) => {
 
     res.json(courses);
   } catch (error) {
-    res.status(500).json({ error: "An unexpected error occured." });
-    if (error instanceof MongooseError) return console.log(error.message);
-    console.log(error);
+    handleError(res, error);
   }
 };
 
@@ -30,9 +28,7 @@ export const getCourse = async (req: Request, res: Response) => {
 
     res.json(course);
   } catch (error) {
-    res.status(500).json({ error: "An unexpected error occured." });
-    if (error instanceof MongooseError) return console.log(error.message);
-    console.log(error);
+    handleError(res, error);
   }
 };
 
@@ -59,9 +55,7 @@ export const createCourse = async (req: Request, res: Response) => {
 
     res.status(201).send(savedCourse);
   } catch (error) {
-    res.status(500).json({ error: "An unexpected error occured." });
-    if (error instanceof MongooseError) return console.log(error.message);
-    console.log(error);
+    handleError(res, error);
   }
 };
 
@@ -94,9 +88,7 @@ export const updateCourse = async (req: Request, res: Response) => {
 
     res.json(updatedCourse);
   } catch (error) {
-    res.status(500).json({ error: "An unexpected error occured." });
-    if (error instanceof MongooseError) return console.log(error.message);
-    console.log(error);
+    handleError(res, error);
   }
 };
 
@@ -114,8 +106,6 @@ export const deleteCourse = async (req: Request, res: Response) => {
 
     res.json({});
   } catch (error) {
-    res.status(500).json({ error: "An unexpected error occured." });
-    if (error instanceof MongooseError) return console.log(error.message);
-    console.log(error);
+    handleError(res, error);
   }
 };

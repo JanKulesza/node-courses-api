@@ -1,18 +1,16 @@
-import { MongooseError } from "mongoose";
 import Genre from "../models/genre.ts";
 import {
   genreInputSchema,
   type GenreInputType,
 } from "../utils/schema/genre.ts";
+import { handleError } from "../utils/handleError.ts";
 
 export const getGenres = async (req, res) => {
   try {
     const genres = await Genre.find();
     res.json(genres);
   } catch (error) {
-    res.status(500).json({ error: "An unexpected error occured." });
-    if (error instanceof MongooseError) return console.log(error.message);
-    console.log(error);
+    handleError(res, error);
   }
 };
 
@@ -28,9 +26,7 @@ export const getGenre = async (req, res) => {
 
     res.json(genre);
   } catch (error) {
-    res.status(500).json({ error: "An unexpected error occured." });
-    if (error instanceof MongooseError) return console.log(error.message);
-    console.log(error);
+    handleError(res, error);
   }
 };
 
@@ -49,9 +45,7 @@ export const createGenre = async (req, res) => {
     await newGenre.save();
     res.json(newGenre);
   } catch (error) {
-    res.status(500).json({ error: "An unexpected error occured." });
-    if (error instanceof MongooseError) return console.log(error.message);
-    console.log(error);
+    handleError(res, error);
   }
 };
 
@@ -76,9 +70,7 @@ export const updateGenre = async (req, res) => {
 
     res.json(updatedGenre);
   } catch (error) {
-    res.status(500).json({ error: "An unexpected error occured." });
-    if (error instanceof MongooseError) return console.log(error.message);
-    console.log(error);
+    handleError(res, error);
   }
 };
 
@@ -102,8 +94,6 @@ export const deleteGenre = async (req, res) => {
 
     res.json({});
   } catch (error) {
-    res.status(500).json({ error: "An unexpected error occured." });
-    if (error instanceof MongooseError) return console.log(error.message);
-    console.log(error);
+    handleError(res, error);
   }
 };
