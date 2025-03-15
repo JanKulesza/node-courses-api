@@ -3,7 +3,7 @@ import { Router } from "express";
 import {
   genreInputSchema,
   type GenreInputType,
-} from "../utils/schema/index.ts";
+} from "../utils/schema/genre.ts";
 
 const router = Router();
 

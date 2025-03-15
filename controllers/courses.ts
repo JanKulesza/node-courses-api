@@ -3,7 +3,8 @@ import { type Response, type Request } from "express";
 import {
   courseInputSchema,
   type CourseInputType,
-} from "../utils/schema/index.ts";
+} from "../utils/schema/course.ts";
+import { MongooseError } from "mongoose";
 
 export const getCourses = async (req: Request, res: Response) => {
   const { tag, sortBy } = req.query;
@@ -39,17 +40,23 @@ export const createCourse = async (req: Request, res: Response) => {
       return;
     }
 
-    const { name, author, isPublished, tags } = req.body as CourseInputType;
+    const { name, author, category, isPublished, tags, price } =
+      req.body as CourseInputType;
     const course = new Course({
       name,
       author,
+      category,
       tags,
       isPublished,
+      price,
     });
+
     const savedCourse = await course.save();
 
     res.status(201).send(savedCourse);
   } catch (error) {
+    res.status(500).json({ error: "An unexpected error occured." });
+    if (error instanceof MongooseError) return console.log(error.message);
     console.log(error);
   }
 };
