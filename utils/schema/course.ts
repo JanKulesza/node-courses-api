@@ -1,6 +1,7 @@
 import { z } from "zod";
 import Author from "../../models/author.ts";
 import mongoose from "mongoose";
+import Genre from "../../models/genre.ts";
 
 export enum CourseCategory {
   WEB = "Web",
@@ -16,10 +17,14 @@ const baseSchema = z.object({
     .string({ required_error: "Name is required." })
     .refine(async (arg) => {
       if (!mongoose.isValidObjectId(arg)) return false;
-      const isValid = !!(await Author.findById(arg).select("name"));
-
-      return isValid;
+      return !!(await Author.findById(arg).select("name"));
     }, "Invalid author id."),
+  genre: z
+    .string({ required_error: "Genre is required." })
+    .refine(async (arg) => {
+      if (!mongoose.isValidObjectId(arg)) return false;
+      return !!(await Genre.findById(arg));
+    }, "Invalid genre id"),
   category: z.nativeEnum(CourseCategory, { message: "Invalid Category." }),
   tags: z
     .array(z.string(), { required_error: "Tags are required" })

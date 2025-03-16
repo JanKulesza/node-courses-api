@@ -11,6 +11,7 @@ export const getCourses = async (req: Request, res: Response) => {
   try {
     const courses = await Course.find()
       .populate("author")
+      .populate("genre")
       .in("tags", tag ? [new RegExp(".*" + tag + ".*")] : [/^/])
       .sort(sortBy ? { [String(sortBy)]: 1 } : {});
 
@@ -24,7 +25,9 @@ export const getCourse = async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
-    const course = await Course.findById(id).populate("author");
+    const course = await Course.findById(id)
+      .populate("author")
+      .populate("genre");
     if (!course) res.status(404).json("Course not found");
 
     res.json(course);
@@ -42,11 +45,12 @@ export const createCourse = async (req: Request, res: Response) => {
       return;
     }
 
-    const { name, author, category, isPublished, tags, price } =
+    const { name, author, genre, category, isPublished, tags, price } =
       req.body as CourseInputType;
     const course = new Course({
       name,
       author,
+      genre,
       category,
       tags,
       isPublished,
@@ -73,17 +77,18 @@ export const updateCourse = async (req: Request, res: Response) => {
       return;
     }
 
-    const validation = courseInputSchema.safeParse(req.body);
+    const validation = await courseInputSchema.safeParseAsync(req.body);
     if (!validation.success) {
       res.status(400).json(validation.error.errors);
       return;
     }
 
-    const { name, author, isPublished, tags, category, price } =
+    const { name, author, genre, isPublished, tags, category, price } =
       req.body as CourseInputType;
     const updatedCourse = await Course.findByIdAndUpdate(id, {
       name,
       author,
+      genre,
       category,
       tags,
       isPublished,
@@ -113,3 +118,9 @@ export const deleteCourse = async (req: Request, res: Response) => {
     handleError(res, error);
   }
 };
+// "name": "Node.js course"
+// "genre": "67d6f19bc719cb39c473e06d",
+// "author": "67d6f1ddc719cb39c473e06f",
+// "category": "Web",
+// "tags": ["Node.js"],
+// "isPublished":false
