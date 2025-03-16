@@ -10,6 +10,7 @@ export const getCourses = async (req: Request, res: Response) => {
   const { tag, sortBy } = req.query;
   try {
     const courses = await Course.find()
+      .populate("author")
       .in("tags", tag ? [new RegExp(".*" + tag + ".*")] : [/^/])
       .sort(sortBy ? { [String(sortBy)]: 1 } : {});
 
@@ -23,7 +24,7 @@ export const getCourse = async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
-    const course = await Course.findById(id);
+    const course = await Course.findById(id).populate("author");
     if (!course) res.status(404).json("Course not found");
 
     res.json(course);
@@ -34,7 +35,8 @@ export const getCourse = async (req: Request, res: Response) => {
 
 export const createCourse = async (req: Request, res: Response) => {
   try {
-    const validation = courseInputSchema.safeParse(req.body);
+    const validation = await courseInputSchema.safeParseAsync(req.body);
+
     if (!validation.success) {
       res.status(400).json(validation.error.errors);
       return;
@@ -55,6 +57,8 @@ export const createCourse = async (req: Request, res: Response) => {
 
     res.status(201).send(savedCourse);
   } catch (error) {
+    console.log(error);
+
     handleError(res, error);
   }
 };

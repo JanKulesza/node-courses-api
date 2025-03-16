@@ -8,7 +8,7 @@ const courseSchema = new mongoose.Schema({
     required: true,
     enum: CourseCategory,
   },
-  author: { type: String, required: true },
+  author: { type: mongoose.Schema.Types.ObjectId, ref: "Author" },
   tags: {
     type: [String],
     validate: {
