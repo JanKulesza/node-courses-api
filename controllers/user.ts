@@ -3,11 +3,21 @@ import User from "../models/user.ts";
 import { handleError } from "../utils/handleError.ts";
 import { validateId } from "../utils/validateId.ts";
 import { userInputSchema, type UserInputType } from "../utils/schema/user.ts";
+import { hash } from "bcrypt";
+
+const formatReturnedUser = (user: object, pick: string[]) => {
+  const returnedUser = {};
+  for (const key in user) {
+    if (!pick.includes(key)) continue;
+    returnedUser[key] = user[key];
+  }
+  return returnedUser;
+};
 
 export const getUsers = async (req: Request, res: Response) => {
   try {
     const users = await User.find();
-    res.json(users);
+    res.json(users.map((u) => formatReturnedUser(u, ["name", "_id", "email"])));
   } catch (error) {
     handleError(res, error);
   }
@@ -22,7 +32,7 @@ export const getUser = async (req: Request, res: Response) => {
       res.status(404).json({ error: "User not found." });
       return;
     }
-    res.json(user);
+    res.json(formatReturnedUser(user, ["name", "_id", "email"]));
   } catch (error) {
     handleError(res, error);
   }
@@ -36,10 +46,19 @@ export const createUser = async (req: Request, res: Response) => {
   }
   const { name, email, password } = req.body as UserInputType;
 
-  const user = new User({ name, email, password });
   try {
+    const userExists = !!(await User.findOne({ email }));
+    if (userExists) {
+      res.status(400).json({ error: "User already exists." });
+      return;
+    }
+
+    const hashedPassword = await hash(password, 10);
+
+    const user = new User({ name, email, password: hashedPassword });
+
     await user.save();
-    res.status(201).json(user);
+    res.status(201).json(formatReturnedUser(user, ["name", "_id", "email"]));
   } catch (error) {
     handleError(res, error);
   }
@@ -68,7 +87,7 @@ export const updateUser = async (req: Request, res: Response) => {
       password,
     });
     await user.save();
-    res.json(user);
+    res.json(formatReturnedUser(user, ["name", "_id", "email"]));
   } catch (error) {
     handleError(res, error);
   }
