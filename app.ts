@@ -5,6 +5,7 @@ import { coursesRouter } from "./routes/courses.ts";
 import { genresRouter } from "./routes/genres.ts";
 import connectDB from "./utils/connectDB.ts";
 import { authorsRouter } from "./routes/author.ts";
+import { usersRouter } from "./routes/user.ts";
 
 configDotenv();
 
@@ -31,6 +32,9 @@ app.use("/api/genres", genresRouter);
 
 // /api/authors
 app.use("/api/authors", authorsRouter);
+
+// /api/users
+app.use("/api/users", usersRouter);
 
 const PORT = process.env.PORT ?? 8080;
 app.listen(PORT, () => {
