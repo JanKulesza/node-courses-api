@@ -2,7 +2,6 @@ import { type Request, type Response } from "express";
 import { z } from "zod";
 import { handleError } from "../utils/handleError.ts";
 import { compare } from "bcrypt";
-import jwt from "jsonwebtoken";
 import User from "../models/user.ts";
 
 const authSchema = z.object({
@@ -34,14 +33,10 @@ export const login = async (req: Request, res: Response) => {
       res.status(400).json({ error: "Invalid password." });
       return;
     }
-    if (!process.env.JWT_SECRET) throw new Error("Couldn't authenticate user.");
 
-    const token = jwt.sign(
-      {
-        _id: user._id,
-      },
-      process.env.JWT_SECRET
-    );
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const token = user.generateAuthToken();
 
     res.json({ token });
   } catch (error) {
