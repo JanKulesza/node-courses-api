@@ -58,7 +58,14 @@ export const createUser = async (req: Request, res: Response) => {
     const user = new User({ name, email, password: hashedPassword });
 
     await user.save();
-    res.status(201).json(formatReturnedUser(user, ["name", "_id", "email"]));
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const token = user.generateAuthToken();
+    res
+      .setHeader("Authorization", token)
+      .status(201)
+      .json(formatReturnedUser(user, ["name", "_id", "email"]));
   } catch (error) {
     handleError(res, error);
   }
