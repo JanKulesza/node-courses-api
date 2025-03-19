@@ -1,5 +1,5 @@
 import { type Request, type Response, type NextFunction } from "express";
-import jwt, { JsonWebTokenError } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 const auth = (req: Request, res: Response, next: NextFunction) => {
   const token = req.header("Authorization");
@@ -18,7 +18,7 @@ const auth = (req: Request, res: Response, next: NextFunction) => {
     req.user = decoded;
     next();
   } catch (error) {
-    if (error instanceof JsonWebTokenError) {
+    if (error instanceof jwt.JsonWebTokenError) {
       res.status(400).json({ error: "Invalid token." });
       return;
     }

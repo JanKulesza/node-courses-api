@@ -59,8 +59,6 @@ export const createUser = async (req: Request, res: Response) => {
 
     await user.save();
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     const token = user.generateAuthToken();
     res
       .setHeader("Authorization", token)

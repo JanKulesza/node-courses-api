@@ -34,8 +34,6 @@ export const login = async (req: Request, res: Response) => {
       return;
     }
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     const token = user.generateAuthToken();
 
     res.json({ token });

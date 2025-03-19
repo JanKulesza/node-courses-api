@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.methods.generateAuthToken = function () {
-  if (!process.env.JWT_SECRET) return null;
+  if (!process.env.JWT_SECRET) throw new Error();
 
   return jwt.sign(
     {
@@ -18,6 +18,14 @@ userSchema.methods.generateAuthToken = function () {
   );
 };
 
-const User = mongoose.model("User", userSchema);
+export interface UserDoc extends mongoose.Document {
+  _id: string;
+  name: string;
+  email: string;
+  password: string;
+  generateAuthToken: () => string;
+}
+
+const User = mongoose.model<UserDoc>("User", userSchema);
 
 export default User;
