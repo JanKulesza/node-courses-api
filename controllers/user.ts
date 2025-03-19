@@ -1,7 +1,7 @@
 import { type Request, type Response } from "express";
 import User from "../models/user.ts";
 import { handleError } from "../utils/handleError.ts";
-import { validateId } from "../utils/validateId.ts";
+import { validateId } from "../utils/validation.ts";
 import { userInputSchema, type UserInputType } from "../utils/schema/user.ts";
 import { hash } from "bcrypt";
 
