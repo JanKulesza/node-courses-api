@@ -7,13 +7,16 @@ import {
   getCourses,
   updateCourse,
 } from "../controllers/courses.ts";
+import auth from "../middlewares/auth.ts";
 
 const router = Router();
 
 router.get("/", getCourses);
-router.post("/", createCourse);
 router.get("/:id", getCourse);
-router.put("/:id", updateCourse);
-router.delete("/:id", deleteCourse);
+
+// Protected routes
+router.post("/", auth, createCourse);
+router.put("/:id", auth, updateCourse);
+router.delete("/:id", auth, deleteCourse);
 
 export { router as coursesRouter };

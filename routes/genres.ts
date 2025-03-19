@@ -7,13 +7,16 @@ import {
   getGenres,
   updateGenre,
 } from "../controllers/genres.ts";
+import auth from "../middlewares/auth.ts";
 
 const router = Router();
 
 router.get("/", getGenres);
-router.post("/", createGenre);
 router.get("/:id", getGenre);
-router.put("/:id", updateGenre);
-router.delete("/:id", deleteGenre);
+
+// Protected routes
+router.post("/", auth, createGenre);
+router.put("/:id", auth, updateGenre);
+router.delete("/:id", auth, deleteGenre);
 
 export { router as genresRouter };
