@@ -7,6 +7,7 @@ import connectDB from "./utils/connectDB.ts";
 import { authorsRouter } from "./routes/author.ts";
 import { usersRouter } from "./routes/user.ts";
 import { authRouter } from "./routes/auth.ts";
+import { handleError } from "./middlewares/error.ts";
 
 configDotenv();
 
@@ -39,6 +40,9 @@ app.use("/api/users", usersRouter);
 
 // /api/auth
 app.use("/api/auth", authRouter);
+
+// Error handler
+app.use(handleError);
 
 const PORT = process.env.PORT ?? 8080;
 app.listen(PORT, () => {

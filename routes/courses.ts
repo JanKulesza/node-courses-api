@@ -8,15 +8,16 @@ import {
   updateCourse,
 } from "../controllers/courses.ts";
 import auth from "../middlewares/auth.ts";
+import catchErrors from "../middlewares/catchErrors.ts";
 
 const router = Router();
 
-router.get("/", getCourses);
-router.get("/:id", getCourse);
+router.get("/", catchErrors(getCourses));
+router.get("/:id", catchErrors(getCourse));
 
 // Protected routes
-router.post("/", auth, createCourse);
-router.put("/:id", auth, updateCourse);
-router.delete("/:id", auth, deleteCourse);
+router.post("/", auth, catchErrors(createCourse));
+router.put("/:id", auth, catchErrors(updateCourse));
+router.delete("/:id", auth, catchErrors(deleteCourse));
 
 export { router as coursesRouter };
