@@ -1,11 +1,11 @@
 {
   "name": "node-course",
   "version": "1.0.0",
-  "main": "app.ts",
+  "main": "index.ts",
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "dev": "node --experimental-transform-types --watch app.ts",
+    "dev": "node --experimental-transform-types --watch index.ts",
     "lint": "npx eslint"
   },
   "dependencies": {
