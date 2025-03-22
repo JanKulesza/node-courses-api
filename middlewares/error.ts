@@ -8,13 +8,11 @@ export const handleError = (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _next: NextFunction
 ) => {
-  console.log("HANDLE ERROR");
-
   // Log the error
   if (err instanceof MongooseError) {
-    console.log("Mongoose Error:", err.message);
+    console.log("Mongoose Error:", err);
   } else {
-    console.log("Unexpected Error:", err.message);
+    console.log("Unexpected Error:", err);
   }
 
   // Send a response

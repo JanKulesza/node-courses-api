@@ -1,4 +1,6 @@
 import "express-async-errors";
+import "./sentry.ts";
+import * as Sentry from "@sentry/node";
 import express from "express";
 import { configDotenv } from "dotenv";
 import logger from "./middlewares/logger.ts";
@@ -41,6 +43,9 @@ app.use("/api/users", usersRouter);
 
 // /api/auth
 app.use("/api/auth", authRouter);
+
+// Sentry setup
+Sentry.setupExpressErrorHandler(app);
 
 // Error handler
 app.use(handleError);
