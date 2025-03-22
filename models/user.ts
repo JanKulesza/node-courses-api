@@ -13,7 +13,7 @@ userSchema.methods.generateAuthToken = function () {
   return jwt.sign(
     {
       _id: this._id,
-    },
+    } satisfies jwt.JwtPayload,
     process.env.JWT_SECRET
   );
 };

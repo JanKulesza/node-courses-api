@@ -15,7 +15,7 @@ const auth = (req: Request, res: Response, next: NextFunction) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    req.user = decoded;
+    req.user = decoded as jwt.JwtPayload;
     next();
   } catch (error) {
     if (error instanceof jwt.JsonWebTokenError) {

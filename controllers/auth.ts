@@ -36,7 +36,7 @@ export const login = async (req: Request, res: Response) => {
 
     const token = user.generateAuthToken();
 
-    res.json({ token });
+    res.setHeader("Authorization", token).json({ token });
   } catch (error) {
     handleError(res, error);
   }

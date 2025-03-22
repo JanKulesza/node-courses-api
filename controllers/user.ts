@@ -24,10 +24,14 @@ export const getUsers = async (req: Request, res: Response) => {
 };
 
 export const getUser = async (req: Request, res: Response) => {
-  const { id } = req.params;
+  if (!req.user) {
+    res.status(401).json({ error: "Access denied." });
+    return;
+  }
+  const { _id } = req.user;
+  validateId(_id, res);
   try {
-    validateId(id, res);
-    const user = await User.findById(id);
+    const user = await User.findById(_id).$where("-password");
     if (!user) {
       res.status(404).json({ error: "User not found." });
       return;
