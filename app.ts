@@ -1,5 +1,6 @@
-import { configDotenv } from "dotenv";
+import "express-async-errors";
 import express from "express";
+import { configDotenv } from "dotenv";
 import logger from "./middlewares/logger.ts";
 import { coursesRouter } from "./routes/courses.ts";
 import { genresRouter } from "./routes/genres.ts";
