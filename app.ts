@@ -2,7 +2,6 @@ import "express-async-errors";
 import "./sentry.ts";
 import * as Sentry from "@sentry/node";
 import express from "express";
-import { configDotenv } from "dotenv";
 import logger from "./middlewares/logger.ts";
 import { coursesRouter } from "./routes/courses.ts";
 import { genresRouter } from "./routes/genres.ts";
@@ -11,8 +10,6 @@ import { authorsRouter } from "./routes/author.ts";
 import { usersRouter } from "./routes/user.ts";
 import { authRouter } from "./routes/auth.ts";
 import { handleError } from "./middlewares/error.ts";
-
-configDotenv();
 
 const app = express();
 

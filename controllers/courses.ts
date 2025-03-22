@@ -4,7 +4,6 @@ import {
   courseInputSchema,
   type CourseInputType,
 } from "../utils/schema/course.ts";
-import { MongooseError } from "mongoose";
 
 export const getCourses = async (req: Request, res: Response) => {
   const { tag, sortBy } = req.query;
@@ -13,7 +12,7 @@ export const getCourses = async (req: Request, res: Response) => {
     .populate("genre")
     .in("tags", tag ? [new RegExp(".*" + tag + ".*")] : [/^/])
     .sort(sortBy ? { [String(sortBy)]: 1 } : {});
-  throw new MongooseError("Database down!");
+
   res.json(courses);
 };
 
