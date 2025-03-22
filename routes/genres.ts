@@ -8,6 +8,7 @@ import {
   updateGenre,
 } from "../controllers/genres.ts";
 import auth from "../middlewares/auth.ts";
+import isAdmin from "../middlewares/admin.ts";
 
 const router = Router();
 
@@ -17,6 +18,8 @@ router.get("/:id", getGenre);
 // Protected routes
 router.post("/", auth, createGenre);
 router.put("/:id", auth, updateGenre);
-router.delete("/:id", auth, deleteGenre);
+
+// Admin routes
+router.delete("/:id", auth, isAdmin, deleteGenre);
 
 export { router as genresRouter };

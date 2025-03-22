@@ -5,6 +5,7 @@ const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  isAdmin: { type: Boolean, required: true },
 });
 
 userSchema.methods.generateAuthToken = function () {
@@ -13,6 +14,7 @@ userSchema.methods.generateAuthToken = function () {
   return jwt.sign(
     {
       _id: this._id,
+      isAdmin: this.isAdmin,
     } satisfies jwt.JwtPayload,
     process.env.JWT_SECRET
   );
