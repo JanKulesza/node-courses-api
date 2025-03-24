@@ -5,7 +5,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "test": "jest",
+    "test": "jest --watchAll",
     "dev": "node --experimental-transform-types --watch index.ts",
     "lint": "npx eslint"
   },
