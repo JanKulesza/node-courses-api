@@ -5,7 +5,7 @@ import { handleError } from "./middlewares/error.ts";
 import connectDB from "./utils/db.ts";
 import setupRoutes from "./routes/index.ts";
 
-const app = express();
+export const app = express();
 
 // Middlewares
 app.use(express.json());
@@ -21,6 +21,10 @@ app.use(handleError);
 
 const PORT = process.env.PORT ?? 8080;
 app.listen(PORT, () => {
-  connectDB(process.env.MONGODB_URI);
+  connectDB(
+    process.env.NODE_ENV === "test"
+      ? process.env.MONGODB_TEST_URI!
+      : process.env.MONGODB_URI!
+  );
   console.log(`Started server at http://localhost:${PORT}`);
 });

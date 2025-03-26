@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const connectDB = async (url) => {
+const connectDB = async (url: string) => {
   mongoose.set("strictQuery", true);
 
   try {

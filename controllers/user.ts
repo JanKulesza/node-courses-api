@@ -8,6 +8,8 @@ const formatReturnedUser = (user: object, pick: string[]) => {
   const returnedUser = {};
   for (const key in user) {
     if (!pick.includes(key)) continue;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
     returnedUser[key] = user[key];
   }
   return returnedUser;

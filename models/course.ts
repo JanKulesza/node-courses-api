@@ -27,7 +27,7 @@ const courseSchema = new mongoose.Schema({
   isPublished: { type: Boolean, required: true },
   price: {
     type: Number,
-    required: function () {
+    required: function (this: typeof courseSchema.methods) {
       return this.isPublished;
     },
   },
