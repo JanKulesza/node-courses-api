@@ -1,5 +1,5 @@
 import { describe, expect, it } from "@jest/globals";
-import User from "../../models/user";
+import User from "../../../models/user.ts";
 import * as jwt from "jsonwebtoken";
 import { configDotenv } from "dotenv";
 import mongoose from "mongoose";
