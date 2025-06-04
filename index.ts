@@ -19,8 +19,8 @@ Sentry.setupExpressErrorHandler(app);
 // Error handler
 app.use(handleError);
 
-const PORT = process.env.PORT ?? 8080;
-app.listen(PORT, () => {
+const PORT = process.env.NODE_ENV === "test" ? 8081 : process.env.PORT ?? 8080;
+export const server = app.listen(PORT, () => {
   connectDB(
     process.env.NODE_ENV === "test"
       ? process.env.MONGODB_TEST_URI!

@@ -10,6 +10,7 @@ export const userInputSchema = z.object({
   password: z
     .string({ required_error: "Password is required" })
     .min(4, "Password should be at least 4 characters long."),
+  isAdmin: z.boolean({ required_error: "User role is required." }),
 });
 
 export type UserInputType = z.infer<typeof userInputSchema>;

@@ -34,7 +34,7 @@ export const createGenre = async (req: Request, res: Response) => {
     name,
   });
   await newGenre.save();
-  res.json(newGenre);
+  res.status(201).json(newGenre);
 };
 
 export const updateGenre = async (req: Request, res: Response) => {

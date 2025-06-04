@@ -5,7 +5,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "test": "jest --watchAll --verbose",
+    "test": "jest --watchAll --verbose --runInBand",
     "dev": "node --experimental-transform-types --watch index.ts",
     "lint": "npx eslint"
   },

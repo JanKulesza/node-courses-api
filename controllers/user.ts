@@ -1,6 +1,5 @@
 import { type Request, type Response } from "express";
 import User from "../models/user.ts";
-import { validateId } from "../utils/validation.ts";
 import { userInputSchema, type UserInputType } from "../utils/schema/user.ts";
 import { hash } from "bcrypt";
 
@@ -26,7 +25,6 @@ export const getUser = async (req: Request, res: Response) => {
     return;
   }
   const { _id } = req.user;
-  validateId(_id, res);
   const user = await User.findById(_id).$where("-password");
   if (!user) {
     res.status(404).json({ error: "User not found." });
@@ -41,7 +39,7 @@ export const createUser = async (req: Request, res: Response) => {
     res.status(400).json(validation.error.errors);
     return;
   }
-  const { name, email, password } = req.body as UserInputType;
+  const { name, email, password, isAdmin } = req.body as UserInputType;
 
   const userExists = !!(await User.findOne({ email }));
   if (userExists) {
@@ -51,7 +49,7 @@ export const createUser = async (req: Request, res: Response) => {
 
   const hashedPassword = await hash(password, 10);
 
-  const user = new User({ name, email, password: hashedPassword });
+  const user = new User({ name, email, password: hashedPassword, isAdmin });
 
   await user.save();
 
@@ -64,7 +62,6 @@ export const createUser = async (req: Request, res: Response) => {
 
 export const updateUser = async (req: Request, res: Response) => {
   const { id } = req.params;
-  validateId(id, res);
   const user = await User.findById(id);
   if (!user) {
     res.status(404).json({ error: "User not found." });
@@ -89,7 +86,6 @@ export const updateUser = async (req: Request, res: Response) => {
 
 export const deleteUser = async (req: Request, res: Response) => {
   const { id } = req.params;
-  validateId(id, res);
 
   const user = await User.findById(id);
   if (!user) {

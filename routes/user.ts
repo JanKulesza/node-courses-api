@@ -8,6 +8,7 @@ import {
   createUser,
 } from "../controllers/user.ts";
 import auth from "../middlewares/auth.ts";
+import validateObjectId from "../middlewares/validateObjectId.ts";
 
 const router = Router();
 
@@ -15,8 +16,8 @@ router.get("/", getUsers);
 
 // Protected routes
 router.get("/me", auth, getUser);
-router.post("/", auth, createUser);
-router.put("/:id", auth, updateUser);
-router.delete("/:id", auth, deleteUser);
+router.post("/", createUser);
+router.put("/:id", auth, validateObjectId, updateUser);
+router.delete("/:id", auth, validateObjectId, deleteUser);
 
 export { router as usersRouter };
